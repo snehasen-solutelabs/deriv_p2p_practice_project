@@ -8,16 +8,21 @@ part 'internet_event.dart';
 
 part 'internet_state.dart';
 
-class InternetBloc extends Bloc<InternetEvent, InternetState> {
+class InternetCubit extends Cubit<InternetState> {
   StreamSubscription<bool>? _connectivityListener;
 
-  InternetBloc() : super(InitialState()) {
+  InternetCubit() : super(InitialState()) {
+    void offline() => emit(state);
+    void SocketDisconnected() => emit(state);
+    void connected() => emit(state);
+
+
     _connectivityListener = ConnectionService().state.listen(
       (state) {
         if (state) {
-          if (this.state is! Connected) add(Online());
+          if (this.state is! Connected) Online();
         } else {
-          if (this.state is! Disconnected) add(Offline());
+          if (this.state is! Disconnected) Offline();
         }
       },
     );

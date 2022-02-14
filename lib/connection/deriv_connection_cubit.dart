@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:deriv_p2p_practice_project/api/account/interceptor/interceptor.dart';
+
 import 'package:deriv_p2p_practice_project/api/api_error.dart';
 import 'package:deriv_p2p_practice_project/connection/binary_api_wrapper.dart';
 import 'package:deriv_p2p_practice_project/internet_connection/connection_service.dart';
@@ -16,13 +16,17 @@ part 'deriv_connection_state.dart';
 
 /// Deriv connection bloc that handles the logic of connecting to WebSocket and
 /// listen to state changes in Internet bloc.
-class DerivConnectionBloc
-    extends Bloc<DerivConnectionEvent, DerivConnectionState> {
+class DerivConnectionCubit extends Cubit<DerivConnectionState> {
   /// Initializes the bloc and will try to connect to the WebSocket and listens
   /// to the Internet bloc state changes.
-  DerivConnectionBloc() : super(InitialDerivConnectionState()) {
+  DerivConnectionCubit() : super(InitialDerivConnectionState()) {
     _initialize();
   }
+
+
+
+
+
 
   // Todo(farzin): It seems that this key is always the same so we can get rid
   // of it, It's better to make `BinaryAPI` a singleton instead of handling it
@@ -31,7 +35,8 @@ class DerivConnectionBloc
   // WebSocket connection is from a same instance.
   final UniqueKey _uniqueKey = UniqueKey();
   final Future<void> _delay = Future<void>.delayed(const Duration(seconds: 5));
-  final internet_bloc.InternetBloc _internetBloc = internet_bloc.InternetBloc();
+  final internet_bloc.InternetCubit _internetBloc =
+      internet_bloc.InternetCubit();
   late BinaryAPIWrapper _api;
   late final StreamSubscription<internet_bloc.InternetState>
       _internetBlocSubscription;
@@ -45,7 +50,7 @@ class DerivConnectionBloc
   void _initialize() {
     _api = BinaryAPIWrapper(
       uniqueKey: _uniqueKey,
-      interceptor: Interceptor(this),
+      
     );
 
     connectToWebSocket();
@@ -54,9 +59,9 @@ class DerivConnectionBloc
         .startWith(_internetBloc.state)
         .listen((internet_bloc.InternetState state) {
       if (state is internet_bloc.Disconnected) {
-        add(Reset());
+        Reset();
       } else if (state is internet_bloc.Connected) {
-        add(Reconnect());
+        Reconnect();
       }
     });
   }
@@ -71,22 +76,22 @@ class DerivConnectionBloc
         // Try to reconnect to the WebSocket when the connection gets closed.
         if (_uniqueKey == uniqueKey) {
           ConnectionService().checkConnectivity();
-          add(Reconnect(
+          Reconnect(
             isInternetLost: !ConnectionService().isConnectedToInternet,
-          ));
+          );
         }
       },
       onOpen: (UniqueKey? uniqueKey) {
         if (_uniqueKey == uniqueKey) {
-          add(Connect(api: _api));
+          Connect(api: _api);
         }
       },
       onError: (UniqueKey? uniqueKey) {
         // Try to reconnect to the WebSocket when the connection gets closed.
         ConnectionService().checkConnectivity();
-        add(Reconnect(
+        Reconnect(
           isInternetLost: !ConnectionService().isConnectedToInternet,
-        ));
+        );
       },
     );
   }
@@ -142,7 +147,7 @@ class DerivConnectionBloc
     if (ConnectionService().isConnectedToInternet) {
       if (state is! Reconnecting) {
         yield Reconnecting(
-          isChangingLanguage: event.isChangingLanguage,
+       
           isInternetLost: event.isInternetLost,
         );
         await _delay;
@@ -151,7 +156,7 @@ class DerivConnectionBloc
     } else {
       if (state is! Disconnected) {
         yield Disconnected(
-          isChangingLanguage: event.isChangingLanguage,
+      
           isInternetLost: event.isInternetLost,
         );
       }
@@ -192,7 +197,7 @@ class DerivConnectionBloc
   // Todo(farzin): Would be better to be part of the WebsiteStatusBloc maybe,
   // Connection should not care about anything other than the network itself.
   Stream<DerivConnectionState> _handleConnectionReconnectEvent() async* {
-    add(Reconnect());
+    Reconnect();
   }
 
   @override

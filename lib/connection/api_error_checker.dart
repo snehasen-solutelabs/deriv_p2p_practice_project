@@ -1,5 +1,5 @@
 import 'package:deriv_p2p_practice_project/api/api_error.dart';
-import 'package:deriv_p2p_practice_project/connection/deriv_connection_bloc.dart';
+import 'package:deriv_p2p_practice_project/connection/deriv_connection_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,7 +34,7 @@ class APIErrorChecker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocListener<DerivConnectionBloc, DerivConnectionState>(
+      BlocListener<DerivConnectionCubit, DerivConnectionState>(
         listenWhen: (_, __) => _shouldListen,
         listener: _setConnectionListener,
         child: child,

@@ -1,7 +1,7 @@
 // Todo(farzin): Should follow same naming convention as other blocs.
 // Todo(farzin): Use equatable.
 
-part of 'deriv_connection_bloc.dart';
+part of 'deriv_connection_cubit.dart';
 
 @immutable
 abstract class DerivConnectionState {}
@@ -33,14 +33,13 @@ class Connected extends DerivConnectionState {
 class Disconnected extends DerivConnectionState {
   /// Will emit `Disconnected` state with given parameters.
   Disconnected({
-    this.isChangingLanguage = false,
+   
     this.isInternetLost = false,
     this.error,
   });
 
   /// If true, Than means the connection was closed because user has changed the
-  /// app language.
-  final bool isChangingLanguage;
+ 
 
   /// If true, That means the connection was closed because the device is not
   /// connected to a Wi-Fi or MobileData.
@@ -56,7 +55,7 @@ class Disconnected extends DerivConnectionState {
 
   @override
   String toString() => 'DerivConnectionState(Disconnected('
-      'isChangingLanguage: $isChangingLanguage, '
+      
       'isInternetLost: $isInternetLost'
       'error: $error'
       '))';
@@ -66,13 +65,13 @@ class Disconnected extends DerivConnectionState {
 class Reconnecting extends DerivConnectionState {
   /// Will emit `Reconnecting` state with given parameters.
   Reconnecting({
-    this.isChangingLanguage = false,
+  
     this.isInternetLost = false,
   });
 
   /// If true, Than means the connection was closed because user has changed the
   /// app language.
-  final bool isChangingLanguage;
+
 
   /// If true, That means the connection was closed because the device is not
   /// connected to a Wi-Fi or MobileData.
@@ -80,7 +79,7 @@ class Reconnecting extends DerivConnectionState {
 
   @override
   String toString() => 'DerivConnectionState(Reconnecting('
-      'isChangingLanguage: $isChangingLanguage, isInternetLost: $isInternetLost'
+      'isInternetLost: $isInternetLost'
       '))';
 }
 

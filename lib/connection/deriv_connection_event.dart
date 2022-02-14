@@ -1,7 +1,7 @@
 // Todo(farzin): Should follow same naming convention as other blocs.
 // Todo(farzin): Use equatable.
 
-part of 'deriv_connection_bloc.dart';
+part of 'deriv_connection_cubit.dart';
 
 @immutable
 abstract class DerivConnectionEvent {}
@@ -24,13 +24,11 @@ class Reconfigure extends DerivConnectionEvent {
 class Reconnect extends DerivConnectionEvent {
   /// Will emit `Reconnect` state with given parameters.
   Reconnect({
-    this.isChangingLanguage = false,
+  
     this.isInternetLost = false,
   });
 
-  /// If true, Than means the connection was closed because user has changed the
-  /// app language.
-  final bool isChangingLanguage;
+  
 
   /// If true, That means the connection was closed because the device is not
   /// connected to a Wi-Fi or MobileData.
@@ -38,7 +36,7 @@ class Reconnect extends DerivConnectionEvent {
 
   @override
   String toString() => 'DerivConnectionEvent(Reconnect('
-      'isChangingLanguage: $isChangingLanguage, isInternetLost: $isInternetLost'
+      ' isInternetLost: $isInternetLost'
       '))';
 }
 

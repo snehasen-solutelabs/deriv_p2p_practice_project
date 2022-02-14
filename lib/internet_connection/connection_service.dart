@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
-import 'package:deriv_p2p_practice_project/connection/deriv_connection_bloc.dart';
+import 'package:deriv_p2p_practice_project/connection/deriv_connection_cubit.dart';
 
 class ConnectionService {
   static final ConnectionService _instance = ConnectionService._internal();
@@ -24,7 +24,7 @@ class ConnectionService {
 
   final int _connectivityCheckInterval = 5;
 
-  late DerivConnectionBloc _connectionBloc;
+  late DerivConnectionCubit _connectionBloc;
   Timer? _connectivityTimer;
 
   // Todo(farzin): On Android, when the application is in the background and the
@@ -63,7 +63,7 @@ class ConnectionService {
   }
 
   Future<void> initialize(
-    DerivConnectionBloc connectionBloc,
+    DerivConnectionCubit connectionBloc,
   ) async {
     _connectionBloc = connectionBloc;
     await _connectivity.checkConnectivity();
