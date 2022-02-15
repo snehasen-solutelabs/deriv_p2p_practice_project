@@ -1,3 +1,4 @@
+import 'package:deriv_p2p_practice_project/apiCall/api_connection_cubit.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -48,10 +49,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late final ApiConnectionCubit _connectionCubit;
+
   int _counter = 0;
 
   void _incrementCounter() {
     setState(() {
+      _connectionCubit.adverts();
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
