@@ -12,8 +12,6 @@ class DerivPingCubit extends Cubit<PingState> {
   final UniqueKey _uniqueKey = UniqueKey();
   late BinaryAPIWrapper _api;
 
-  /// Exposes binary API, it is mainly used in the ping method at
-  /// ConnectionService.
   BinaryAPIWrapper get binaryApi => _api;
 
   /// init web socket

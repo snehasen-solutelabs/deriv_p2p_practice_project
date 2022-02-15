@@ -1,4 +1,4 @@
-import 'package:deriv_p2p_practice_project/api/response/advertiser.dart';
+import 'package:deriv_p2p_practice_project/api/models/advertiser.dart';
 import 'package:deriv_p2p_practice_project/enums.dart';
 
 /// Advert Model

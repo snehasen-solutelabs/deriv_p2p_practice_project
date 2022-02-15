@@ -1,4 +1,4 @@
-import 'package:deriv_p2p_practice_project/features/core/presentation/pages/connection_page.dart';
+import 'package:deriv_p2p_practice_project/features/core/presentation/pages/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,6 +17,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  Widget build(BuildContext context) =>
-      const MaterialApp(home: ConnectionPage());
+  Widget build(BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Dashboard(),
+        theme:
+            ThemeData(primarySwatch: Colors.blue, brightness: Brightness.light),
+      );
 }
