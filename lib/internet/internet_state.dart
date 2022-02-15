@@ -15,3 +15,8 @@ class InternetConnectionType extends InternetState {
 
   InternetConnectionType({required this.connectionType});
 }
+
+class InitialState extends InternetState {
+  @override
+  String toString() => 'InternetState(InitialState)';
+}
