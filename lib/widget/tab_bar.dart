@@ -32,7 +32,7 @@ class _DefaultTabBarState extends State<DefaultTabBar>
 
   @override
   Widget build(BuildContext context) => Material(
-        color: widget.color ?? Colors.blue,
+        color: Colors.grey.shade900,
         child: InkWell(
           child: Stack(
             children: [
@@ -41,7 +41,7 @@ class _DefaultTabBarState extends State<DefaultTabBar>
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: Colors.black,
+                        color: Colors.white,
                         width: 2.0,
                       ),
                     ),

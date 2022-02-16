@@ -23,13 +23,12 @@ class _DashboardPageState extends State<Dashboard>
     with TickerProviderStateMixin {
   bool isSell = false;
   final ScrollController _scrollController = ScrollController();
-  final GlobalKey<State<StatefulWidget>>? _searchPageTabBarKey = GlobalKey();
+  final GlobalKey<State<StatefulWidget>>? _switchTypeTabBarKey = GlobalKey();
   late final PingCubit _pingCubit;
   late final AdvertListCubit _advertListCubit;
   int selectedTabIndex = 0;
   late TabController tabController;
-  bool _shouldShowSortAlert = false;
-  bool _shouldShowFilterAlert = false;
+
   @override
   void initState() {
     _pingCubit = PingCubit();
@@ -39,28 +38,25 @@ class _DashboardPageState extends State<Dashboard>
 
     _scrollController.addListener(_onScrollLoadMore);
 
-    tabController = TabController(length: 2, vsync: this);
-    tabController.addListener(() {
-      setState(() {
-        selectedTabIndex = tabController.index;
-      });
-    });
-
     super.initState();
   }
 
-  void _updateSwitchEvent(int value) {
-    setState(() {
-      isSell = value == AdvertType.sell.index;
-    });
-  }
+  // void _updateTabIndex(int value) {
+  //   print("asad");
+  //   print(AdvertType.sell.index);
+  //   setState(() {
+  //     isSell = value == AdvertType.sell.index;
+  //   });
+
+  //   _advertListCubit..fetchAdverts(isSell == true ? "sell" : "buy", true);
+  // }
 
   void _onScrollLoadMore() {
     if (_scrollController.position.maxScrollExtent !=
         _scrollController.offset) {
       return;
     }
-    _advertListCubit..fetchAdverts();
+    _advertListCubit..fetchAdverts(isSell == true ? "sell" : "buy", false);
   }
 
   @override
@@ -69,6 +65,30 @@ class _DashboardPageState extends State<Dashboard>
     _advertListCubit.close();
     super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      appBar: AppBar(
+        title: Text("Deriv P2P Practice"),
+        backgroundColor: Colors.grey.shade900,
+      ),
+      backgroundColor: Colors.black,
+      body: BlocBuilder<PingCubit, PingState>(
+        bloc: _pingCubit,
+        builder: (BuildContext context, PingState state) {
+          if (state is PingLoadedState) {
+            _advertListCubit
+              ..fetchAdverts(isSell == true ? "sell" : "buy", false);
+            return advertWidget();
+          } else if (state is PingLoadingState) {
+            return ProgressIndicator();
+          } else if (state is PingErrorState) {
+            return ProgressIndicator();
+          } else {
+            return ProgressIndicator();
+          }
+        },
+      ));
 
   Widget advertWidget() => BlocBuilder<AdvertListCubit, AdvertListState>(
         bloc: _advertListCubit,
@@ -83,14 +103,13 @@ class _DashboardPageState extends State<Dashboard>
             return ProgressIndicator();
           }
         },
-        // )
       );
 
-  Widget _buildBuySellTab(bool isSell) => Center(
+  Widget _buildBuySellTab(bool isSell, BuildContext newContext) => Center(
         child: DefaultTabBar(
-          color: Colors.blue,
+          color: Colors.grey,
           length: 2,
-          tabBarKey: _searchPageTabBarKey,
+          tabBarKey: _switchTypeTabBarKey,
           tabs: [
             Tab(
               text: "Buy",
@@ -99,35 +118,28 @@ class _DashboardPageState extends State<Dashboard>
               text: "Sell",
             ),
           ],
-          onTap: (int value) => _updateSwitchEvent(value),
+          onTap: (tabIndex) {
+            switch (tabIndex) {
+              // Buy
+              case 0:
+                BlocProvider.of<AdvertListCubit>(newContext)
+                    .fetchAdverts('buy', true);
+                break;
+
+              // sell
+              case 1:
+                BlocProvider.of<AdvertListCubit>(newContext)
+                    .fetchAdverts('sell', true);
+
+                break;
+            }
+          },
         ),
       );
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: Text("Deriv P2P Practice"),
-      ),
-      backgroundColor: Colors.white,
-      body: BlocBuilder<PingCubit, PingState>(
-        bloc: _pingCubit,
-        builder: (BuildContext context, PingState state) {
-          if (state is PingLoadedState) {
-            _advertListCubit..fetchAdverts();
-            return advertWidget();
-          } else if (state is PingLoadingState) {
-            return ProgressIndicator();
-          } else if (state is PingErrorState) {
-            return ProgressIndicator();
-          } else {
-            return ProgressIndicator();
-          }
-        },
-      ));
-
   Widget listViewAdvert(List<Advert> adverts, bool loadMore) => Column(
         children: <Widget>[
-          _buildBuySellTab(isSell),
+          _buildBuySellTab(isSell, context),
           Expanded(
               child: ListView.builder(
                   padding: const EdgeInsets.all(8),
@@ -142,6 +154,7 @@ class _DashboardPageState extends State<Dashboard>
                       final Advert item = adverts[index];
 
                       return Card(
+                        color: Colors.grey.shade900,
                         elevation: 20,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,7 +191,7 @@ class _DashboardPageState extends State<Dashboard>
 
   Widget TextWidget(String text) => Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text(text, style: TextStyle(fontSize: 12, color: Colors.black)),
+        child: Text(text, style: TextStyle(fontSize: 14, color: Colors.white)),
       );
 
   // void _setSelectedPageIndex(int index) {

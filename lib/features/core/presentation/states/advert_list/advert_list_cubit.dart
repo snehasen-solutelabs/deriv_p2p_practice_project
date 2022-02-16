@@ -20,15 +20,17 @@ class AdvertListCubit extends Cubit<AdvertListState> {
   /// list of adverts
   final List<Advert> _adverts = <Advert>[];
 
-  Future<void> fetchAdverts() async {
+  Future<void> fetchAdverts(String counterpartyType, bool isTabChanged) async {
     try {
-      final int offset = _adverts.length ~/ defaultDataFetchLimit;
+      final int offset =
+          isTabChanged == true ? 0 : _adverts.length ~/ defaultDataFetchLimit;
       if (offset == 0) {
         emit(AdvertListLoadingState());
       }
 
       final Map<String, dynamic>? advertListResponse = await pingCubit.binaryApi
-          .p2pAdvertList(offset: offset, counterpartyType: 'buy', limit: 10)
+          .p2pAdvertList(
+              offset: offset, counterpartyType: counterpartyType, limit: 10)
           .timeout(const Duration(seconds: 50));
       if (advertListResponse?['error'] != null) {
         emit(AdvertListErrorState(advertListResponse?['error']));
