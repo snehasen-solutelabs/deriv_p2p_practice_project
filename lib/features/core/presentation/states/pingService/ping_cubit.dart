@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Deriv ping cubit for managing active symbol state.
-class DerivPingCubit extends Cubit<PingState> {
+class PingCubit extends Cubit<PingState> {
   /// Initializes ping cubit.
-  DerivPingCubit() : super(PingInitialState());
+  PingCubit() : super(PingInitialState());
   final UniqueKey _uniqueKey = UniqueKey();
   late BinaryAPIWrapper _api;
 

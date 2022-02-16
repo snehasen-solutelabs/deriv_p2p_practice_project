@@ -10,7 +10,7 @@ part 'advert_list_state.dart';
 class AdvertListCubit extends Cubit<AdvertListState> {
   /// Initializes Adverts state.
 
-  final DerivPingCubit pingCubit;
+  final PingCubit pingCubit;
 
   AdvertListCubit({required this.pingCubit}) : super(AdvertListInitialState());
 
@@ -29,7 +29,7 @@ class AdvertListCubit extends Cubit<AdvertListState> {
 
       final Map<String, dynamic>? advertListResponse = await pingCubit.binaryApi
           .p2pAdvertList(offset: offset, counterpartyType: 'buy', limit: 10)
-          .timeout(const Duration(seconds: 15));
+          .timeout(const Duration(seconds: 50));
       if (advertListResponse?['error'] != null) {
         emit(AdvertListErrorState(advertListResponse?['error']));
       }
