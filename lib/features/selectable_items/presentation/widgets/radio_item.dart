@@ -91,7 +91,7 @@ class _RadioItem<T> extends StatelessWidget {
           ),
           border: showBorder
               ? Border.all(
-                  color: value == groupValue ? Colors.red : Colors.cyan,
+                  color: value == groupValue ? Colors.white : Colors.grey,
                 )
               : Border.all(width: 0),
           color: color ?? Colors.black,
@@ -100,7 +100,7 @@ class _RadioItem<T> extends StatelessWidget {
           title: title,
           subtitle: subtitle,
           value: value,
-          activeColor: Colors.grey,
+          activeColor: Colors.white,
           groupValue: groupValue,
           onChanged: onChanged,
           secondary: secondary,

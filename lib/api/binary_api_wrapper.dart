@@ -1,3 +1,4 @@
+import 'package:deriv_p2p_practice_project/enums.dart';
 import 'package:deriv_p2p_practice_project/features/core/helpers/json_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deriv_api/basic_api/generated/api.dart';
@@ -31,12 +32,15 @@ class BinaryAPIWrapper {
     int? limit,
     int? offset,
     String? searchQuery,
+    AdvertSortType? sortBy,
   }) =>
       _derivAPICall(P2pAdvertListRequest(
-          counterpartyType: counterpartyType,
-          limit: limit,
-          offset: offset,
-          advertiserName: searchQuery));
+        counterpartyType: counterpartyType,
+        limit: limit,
+        offset: offset,
+        advertiserName: searchQuery,
+        sortBy: sortBy?.toString(),
+      ));
 
   Future<Map<String, dynamic>> _derivAPICall(Request request) async {
     final Response response = await _derivAPI.call<Response>(request: request);

@@ -174,6 +174,7 @@ class _ExpandableBottomSheetState extends State<ExpandableBottomSheet> {
               topLeft: Radius.circular(16),
               topRight: Radius.circular(16),
             ),
+            color: Colors.grey.shade900,
           ),
           child: ListView(
             shrinkWrap: true,

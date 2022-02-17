@@ -19,6 +19,7 @@ class _ExpandableBottomSheetTitle extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 14),
               child: Text(
                 expandableBottomSheetProvider.title!,
+                style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
             onTap: expandableBottomSheetProvider.onTogglerTap,

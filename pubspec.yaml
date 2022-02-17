@@ -48,6 +48,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  bloc_test:
+  build_runner: ^2.0.0
+  flutter_driver:
+    sdk: flutter
+  
+
 deriv_lint:
   git:
     url: https://github.com/regentmarkets/flutter-deriv-packages.git

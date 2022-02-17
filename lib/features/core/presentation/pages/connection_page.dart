@@ -1,12 +1,7 @@
-import 'package:deriv_p2p_practice_project/api/models/advert.dart';
-import 'package:deriv_p2p_practice_project/api/models/selectable_item_model.dart';
-import 'package:deriv_p2p_practice_project/enums.dart';
 import 'package:deriv_p2p_practice_project/features/core/presentation/pages/advert_list.dart';
-import 'package:deriv_p2p_practice_project/features/core/presentation/states/advert_list/advert_list_cubit.dart';
 
 import 'package:deriv_p2p_practice_project/features/core/presentation/states/pingService/ping_cubit.dart';
 import 'package:deriv_p2p_practice_project/features/core/presentation/states/pingService/ping_state.dart';
-import 'package:deriv_p2p_practice_project/widget/tab_bar.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

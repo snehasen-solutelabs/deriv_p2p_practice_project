@@ -21,7 +21,7 @@ class _ExpandableBottomSheetToggler extends StatelessWidget {
           height: 4,
           width: 40,
           decoration: BoxDecoration(
-            // color: context.theme.base05Color,
+            color: Colors.grey,
             borderRadius: BorderRadius.circular(4),
           ),
         ),

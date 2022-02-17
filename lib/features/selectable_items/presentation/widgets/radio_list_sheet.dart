@@ -105,7 +105,7 @@ class _RadioListSheetState extends State<RadioListSheet> {
               value: index,
               groupValue: widget.data[index].selected ? index : -1,
               secondary: widget.data[index].trailing,
-              color: widget.color ?? Colors.black,
+              color: widget.color ?? Colors.black45,
               showBorder: widget.showBorder,
               onChanged: (int? index) async =>
                   _isSelectedItemChanged ? null : _onItemSelectedChange(index),

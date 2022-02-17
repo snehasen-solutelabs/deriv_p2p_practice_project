@@ -20,9 +20,5 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Connection(),
-        theme: ThemeData(
-          primaryColor: Colors.black,
-          //primarySwatch: Colors.black,
-        ),
       );
 }

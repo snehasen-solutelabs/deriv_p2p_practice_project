@@ -25,12 +25,9 @@ class SelectableItemText extends StatelessWidget {
   Widget build(BuildContext context) => value != null
       ? Text(
           value!,
-          // style: context.theme.textStyle(
-          //   textStyle: selected ? TextStyles.body2 : TextStyles.body1,
-          //   color: selected
-          //       ? context.theme.base01Color
-          //       : context.theme.base03Color,
-          // ),
+          style: TextStyle(
+            color: selected ? Colors.white : Colors.grey,
+          ),
         )
       : const SizedBox.shrink();
 }
