@@ -1,4 +1,4 @@
-import 'package:deriv_p2p_practice_project/features/core/presentation/pages/dashboard.dart';
+import 'package:deriv_p2p_practice_project/features/core/presentation/pages/connection_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Dashboard(),
+        home: Connection(),
         theme: ThemeData(
           primaryColor: Colors.black,
           //primarySwatch: Colors.black,

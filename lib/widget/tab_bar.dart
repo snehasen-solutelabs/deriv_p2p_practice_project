@@ -41,7 +41,6 @@ class _DefaultTabBarState extends State<DefaultTabBar>
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: Colors.white,
                         width: 2.0,
                       ),
                     ),
@@ -53,6 +52,9 @@ class _DefaultTabBarState extends State<DefaultTabBar>
                 child: SizedBox(
                   height: 48,
                   child: TabBar(
+                    indicatorColor: Colors.grey,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.grey,
                     key: widget.tabBarKey,
                     tabs: widget.tabs,
                     controller: _tabController,

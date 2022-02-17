@@ -29,3 +29,9 @@ class AdvertListErrorState extends AdvertListState {
   /// Error message
   final String errorMessage;
 }
+
+class UpdatetimerUIState extends AdvertListState {
+  final int currentTime;
+
+  UpdatetimerUIState(this.currentTime);
+}

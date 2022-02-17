@@ -1,15 +1,13 @@
+import 'package:deriv_p2p_practice_project/features/core/helpers/shared_preferences_helper.dart';
 
-// import 'package:deriv_p2p_practice_project/features/helpers.dart';
+/// Helper for saving/reading user sort option.
 
+/// Key for advert sort type index.
+const String userAdvertSortTypeIndexKey = 'ADVERT_SORT_TYPE_INDEX_KEY';
 
-// /// Helper for saving/reading user sort option.
+/// Get index of the saved advert sort type.
+Future<int> getUserAdvertSortTypeIndex() => getInt(userAdvertSortTypeIndexKey);
 
-// /// Key for advert sort type index.
-// const String userAdvertSortTypeIndexKey = 'ADVERT_SORT_TYPE_INDEX_KEY';
-
-// /// Get index of the saved advert sort type.
-// Future<int> getUserAdvertSortTypeIndex() => getInt(userAdvertSortTypeIndexKey);
-
-// /// Save index of the user advert sort type.
-// Future<void> setUserAdvertSortTypeIndex(int advertSortTypeIndex) =>
-//     setInt(userAdvertSortTypeIndexKey, advertSortTypeIndex);
+/// Save index of the user advert sort type.
+Future<void> setUserAdvertSortTypeIndex(int advertSortTypeIndex) =>
+    setInt(userAdvertSortTypeIndexKey, advertSortTypeIndex);
