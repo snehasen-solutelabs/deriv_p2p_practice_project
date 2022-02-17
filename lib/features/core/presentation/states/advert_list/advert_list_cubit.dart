@@ -32,6 +32,9 @@ class AdvertListCubit extends Cubit<AdvertListState> {
 
   /// list of adverts
   final List<Advert> _adverts = <Advert>[];
+  void closeTimer() {
+    timer?.cancel();
+  }
 
   Future<void> fetchAdverts(bool isTabChanged, bool isPeriodic) async {
     try {
