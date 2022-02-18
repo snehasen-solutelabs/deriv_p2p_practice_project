@@ -9,9 +9,7 @@ part 'radio_item.dart';
 class RadioListSheet extends StatefulWidget {
   /// Creates a list of radio buttons and show it on an expandable bottom sheet
   ///
-  /// When a radio button is selected, the widget calls the [onChanged] callback that
-  /// would change `selected` status of that item's [data] and would dismiss the
-  /// bottom-sheet.
+
   ///
   /// The following arguments are required:
   ///
@@ -57,8 +55,7 @@ class RadioListSheet extends StatefulWidget {
   final Widget? leftAction;
 
   /// To determine whether a boarder around the radio item should be drawn or
-  /// not. The border will have a different color based on [SelectableItemModel.selected]
-  /// value.
+
   ///
   /// This defaults to true
   final bool showBorder;

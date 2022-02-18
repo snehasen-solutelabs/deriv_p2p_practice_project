@@ -5,11 +5,7 @@ part of 'radio_list_sheet.dart';
 class _RadioItem<T> extends StatelessWidget {
   /// Creates a combination of a list tile and a radio button.
   ///
-  /// When the radio button is selected, the widget calls the [onChanged] callback.
-  /// Widgets that use a radio button will listen for the [onChanged] callback
-  /// and rebuild the radio tile with a new [groupValue] to update the visual
-  /// appearance of the radio button.
-  ///
+
   /// The following arguments are required:
   ///
   /// * [title] to display useful information for the each radio item
@@ -38,8 +34,6 @@ class _RadioItem<T> extends StatelessWidget {
   /// Typically a [Text] widget.
   final Widget? subtitle;
 
-  /// A widget to display on the opposite side of the tile from the radio button.
-  ///
   /// Typically an [Icon] widget.
   final Widget? secondary;
 

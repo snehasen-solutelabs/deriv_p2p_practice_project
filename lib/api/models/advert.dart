@@ -3,7 +3,9 @@ import 'package:deriv_p2p_practice_project/enums.dart';
 
 /// Advert Model
 class Advert {
+  // ignore: public_member_api_docs
   final String? accountCurrency;
+  // ignore: public_member_api_docs
   final Advertiser? advertiserDetails;
   final double? amount;
   final String? amountDisplay;

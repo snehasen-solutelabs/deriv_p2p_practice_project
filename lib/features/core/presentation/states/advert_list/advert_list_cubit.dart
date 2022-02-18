@@ -1,14 +1,9 @@
 import 'dart:async';
 import 'dart:developer' as dev;
-import 'package:deriv_p2p_practice_project/api/binary_api_wrapper.dart';
 import 'package:deriv_p2p_practice_project/api/models/advert.dart';
-import 'package:deriv_p2p_practice_project/enums.dart';
 import 'package:deriv_p2p_practice_project/features/core/helpers/advert_list_cubit_pref_helper.dart';
-import 'package:deriv_p2p_practice_project/features/core/helpers/sort_pref_helper.dart';
 import 'package:deriv_p2p_practice_project/features/core/presentation/states/pingService/ping_cubit.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 part 'advert_list_state.dart';
 
 /// Adverts cubit for managing active symbol state.
@@ -16,11 +11,13 @@ class AdvertListCubit extends Cubit<AdvertListState> {
   /// Initializes Adverts state.
   Timer? timer;
   final PingCubit pingCubit;
+  int pageCount;
 
-  AdvertListCubit({required this.pingCubit}) : super(AdvertListInitialState()) {
+  AdvertListCubit({required this.pingCubit, required this.pageCount})
+      : super(AdvertListInitialState()) {
     timer = Timer.periodic(const Duration(minutes: 1), (timer) {
       print('Timer');
-      fetchAdverts(true, false);
+      fetchAdverts(true, false, pageCount);
       emit(AdvertListLoadedState(
           adverts: _adverts,
           hasRemaining: _adverts.length >= defaultDataFetchLimit));
@@ -36,8 +33,10 @@ class AdvertListCubit extends Cubit<AdvertListState> {
     timer?.cancel();
   }
 
-  Future<void> fetchAdverts(bool isTabChanged, bool isPeriodic) async {
+  Future<void> fetchAdverts(
+      bool isTabChanged, bool isPeriodic, int pageCount) async {
     try {
+      print("pageCount$pageCount");
       final int offset =
           isTabChanged == true ? 0 : _adverts.length ~/ defaultDataFetchLimit;
       if (offset == 0) {
@@ -51,7 +50,7 @@ class AdvertListCubit extends Cubit<AdvertListState> {
       }
       final Map<String, dynamic>? advertListResponse = await pingCubit.binaryApi
           .p2pAdvertList(
-            offset: isPeriodic ? 0 : offset,
+            offset: pageCount,
             counterpartyType: counterpartyType,
             limit: 10,
           )
@@ -78,6 +77,7 @@ class AdvertListCubit extends Cubit<AdvertListState> {
         emit(AdvertListErrorState('Something went wrong.'));
       }
     } on Exception catch (e) {
+      print(pingCubit);
       dev.log('$AdvertListCubit fetchAdverts() error: $e');
 
       emit(AdvertListErrorState('$e'));

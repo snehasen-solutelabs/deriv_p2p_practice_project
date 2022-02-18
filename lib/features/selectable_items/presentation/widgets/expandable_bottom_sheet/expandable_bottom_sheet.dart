@@ -24,11 +24,6 @@ part 'expandable_bottom_sheet_upper_content.dart';
 
 /// Expandable bottom sheet widget
 class ExpandableBottomSheet extends StatefulWidget {
-  /// This widget helps showing an expandable bottom sheet with [title], [upperContent] and [lowerContent] parts.
-  ///
-  /// All properties are optional.
-  /// You can set [openMaximized] to true, if you want to open bottom sheet in full size.
-  /// By default height in minimize state is calculated by [upperContent],
   /// but if you set [maxHeight] and [lowerContent], that value will be overridden.
   const ExpandableBottomSheet({
     Key? key,

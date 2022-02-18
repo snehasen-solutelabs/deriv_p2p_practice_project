@@ -22,7 +22,7 @@ class _ExpandableBottomSheetHintButton extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  child: Icon(
+                  child: const Icon(
                     Icons.info_outline,
                     size: 24,
                     color: Colors.white,

@@ -32,6 +32,7 @@ class _ConnectionPageState extends State<Connection> {
 
         // Here connecting to Ping cubit (ping cubit will initialize Binary api and also authorize user token)
         body: MultiBlocProvider(
+          // ignore: always_specify_types
           providers: [
             BlocProvider<PingCubit>(
                 create: (BuildContext context) => PingCubit()..initWebSocket())
@@ -40,7 +41,7 @@ class _ConnectionPageState extends State<Connection> {
             builder: (BuildContext context, PingState state) {
               if (state is PingLoadedState) {
                 // if connection established then move to advert palistge widget
-                return AdvertList();
+                return const AdvertList();
               } else if (state is PingLoadingState) {
                 return ProgressIndicator();
               } else if (state is PingErrorState) {

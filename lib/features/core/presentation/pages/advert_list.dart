@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:deriv_p2p_practice_project/api/models/advert.dart';
 import 'package:deriv_p2p_practice_project/api/models/selectable_item_model.dart';
 import 'package:deriv_p2p_practice_project/enums.dart';
@@ -9,6 +11,7 @@ import 'package:deriv_p2p_practice_project/features/core/presentation/states/adv
 import 'package:deriv_p2p_practice_project/features/core/presentation/states/pingService/ping_cubit.dart';
 
 import 'package:deriv_p2p_practice_project/features/selectable_items/presentation/widgets/radio_list_sheet.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +27,8 @@ class AdvertList extends StatefulWidget {
 
 class _AdvertListPageState extends State<AdvertList>
     with SingleTickerProviderStateMixin {
+  int pageCount = 0;
+  // ignore: unused_field
   bool _shouldShowSortAlert = false;
   final ScrollController _scrollController = ScrollController();
 
@@ -35,10 +40,10 @@ class _AdvertListPageState extends State<AdvertList>
 
   @override
   void initState() {
-    _tabController = new TabController(vsync: this, length: 2);
+    _tabController = TabController(vsync: this, length: 2);
     _tabController.addListener(_setActiveTabIndex);
-    _advertListCubit =
-        AdvertListCubit(pingCubit: BlocProvider.of<PingCubit>(context));
+    _advertListCubit = AdvertListCubit(
+        pingCubit: BlocProvider.of<PingCubit>(context), pageCount: 10);
     onRefreshPage(false);
     _scrollController.addListener(_onScrollLoadMore);
     _checkSortValue();
@@ -48,19 +53,26 @@ class _AdvertListPageState extends State<AdvertList>
   void _setActiveTabIndex() {
     selectedTabIndex = _tabController.index;
     setCounterpartyType(
+        // ignore: avoid_bool_literals_in_conditional_expressions
         isCounterpartyTypeSell: selectedTabIndex == 0 ? false : true);
   }
 
   void _onScrollLoadMore() {
-    if (_scrollController.position.maxScrollExtent !=
-        _scrollController.offset) {
-      return;
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      setState(() {
+        setState(() {
+          pageCount += 1;
+        });
+
+        onRefreshPage(false);
+        //add api for load the more data according to new page
+      });
     }
-    onRefreshPage(false);
   }
 
-  onRefreshPage(bool isloadMore) {
-    _advertListCubit..fetchAdverts(isloadMore, false);
+  void onRefreshPage(bool isloadMore) {
+    _advertListCubit.fetchAdverts(isloadMore, false, pageCount);
   }
 
   @override
@@ -79,6 +91,7 @@ class _AdvertListPageState extends State<AdvertList>
             buildAdvertListView(),
           ])));
 
+  // ignore: prefer_expression_function_bodies
   Widget buildAdvertListView() {
     return BlocBuilder<AdvertListCubit, AdvertListState>(
       bloc: _advertListCubit,
@@ -86,28 +99,32 @@ class _AdvertListPageState extends State<AdvertList>
         if (state is AdvertListLoadedState) {
           return listViewAdvert(state.adverts, state.hasRemaining);
         } else if (state is AdvertListLoadingState) {
-          return ProgressIndicator();
+          return progressIndicator();
         } else if (state is AdvertListErrorState) {
-          return ProgressIndicator();
+          return progressIndicator();
         } else {
-          return ProgressIndicator();
+          return progressIndicator();
         }
       },
     );
   }
 
   AppBar _buildAppBar() => AppBar(
-        title: Text("P2P Practice Project"),
+        title: const Text('P2P Practice Project'),
         backgroundColor: Colors.black,
         elevation: 0,
         centerTitle: false,
         bottom: TabBar(
           controller: _tabController,
-          tabs: [
-            Tab(text: "Buy"),
-            Tab(text: "Sell"),
+          // ignore: prefer_const_literals_to_create_immutables
+          tabs: <Widget>[
+            const Tab(text: 'Buy'),
+            const Tab(text: 'Sell'),
           ],
-          onTap: (value) {
+          onTap: (int value) {
+            setState(() {
+              pageCount = 0;
+            });
             onRefreshPage(true);
           },
         ),
@@ -115,11 +132,12 @@ class _AdvertListPageState extends State<AdvertList>
       );
   Widget _buildSortAction() => IconButton(
         icon: Stack(
+          // ignore: prefer_const_literals_to_create_immutables
           children: <Widget>[
             const Icon(Icons.sort),
           ],
         ),
-        tooltip: "Sort",
+        tooltip: 'Sort',
         onPressed: _openSortOptions,
       );
   Future<void> _checkSortValue() async {
@@ -132,49 +150,68 @@ class _AdvertListPageState extends State<AdvertList>
   }
 
   Future<void> _openSortOptions() async {
-    final int userStashedSortIndex = await getUserAdvertSortTypeIndex();
+    CupertinoAlertDialog(
+        title: const Text('Sort'),
+        actions: <Widget>[
+          CupertinoDialogAction(
+              onPressed: () {
+                onRefreshPage(false);
+              },
+              child: const Text('Exchange rate (Default)')),
+          CupertinoDialogAction(
+              onPressed: () {
+                onRefreshPage(false);
+              },
+              child: const Text('Completion rate')),
+        ],
+        content: const Text('Saved successfully'));
 
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) => RadioListSheet(
-        title: 'Sort by',
-        data: _getFilters(
-          context: context,
-          userStashedSortIndex: userStashedSortIndex,
-        ),
-        onChanged: (int index) {
-          _sortController.onSortSelected != null
-              ? (AdvertSortType.values[index])
-              : (AdvertSortType.values[index]);
+    // final int userStashedSortIndex = await getUserAdvertSortTypeIndex();
 
-          setState(() {
-            _shouldShowSortAlert = index != AdvertSortType.rate.index;
-          });
-          onRefreshPage(false);
-        },
-      ),
-    );
+    // await showModalBottomSheet<void>(
+    //   context: context,
+    //   isScrollControlled: true,
+    //   backgroundColor: Colors.transparent,
+    //   builder: (BuildContext context) => RadioListSheet(
+    //     title: 'Sort by',
+    //     data: _getFilters(
+    //       context: context,
+    //       userStashedSortIndex: userStashedSortIndex,
+    //     ),
+    //     onChanged: (int index) {
+    //       _sortController.onSortSelected != null
+    //           // ignore: unnecessary_statements
+    //           ? (AdvertSortType.values[index])
+    //           // ignore: unnecessary_statements
+    //           : (AdvertSortType.values[index]);
+
+    //       setState(() {
+    //         _shouldShowSortAlert = index != AdvertSortType.rate.index;
+    //       });
+    //       onRefreshPage(false);
+    //     },
+    //   ),
+    // );
   }
 
-  List<SelectableItemModel> _getFilters({
-    required BuildContext context,
-    int? userStashedSortIndex,
-  }) =>
-      <SelectableItemModel>[
-        SelectableItemModel(
-          id: AdvertSortType.rate.index,
-          title: "Exchange rate (Default)",
-          selected: userStashedSortIndex == AdvertSortType.rate.index,
-        ),
-        SelectableItemModel(
-          id: AdvertSortType.completion.index,
-          title: 'Completion rate',
-          selected: userStashedSortIndex == AdvertSortType.completion.index,
-        ),
-      ];
+  // List<SelectableItemModel> _getFilters({
+  //   required BuildContext context,
+  //   int? userStashedSortIndex,
+  // }) =>
+  //     <SelectableItemModel>[
+  //       SelectableItemModel(
+  //         id: AdvertSortType.rate.index,
+  //         title: 'Exchange rate (Default)',
+  //         selected: userStashedSortIndex == AdvertSortType.rate.index,
+  //       ),
+  //       SelectableItemModel(
+  //         id: AdvertSortType.completion.index,
+  //         title: 'Completion rate',
+  //         selected: userStashedSortIndex == AdvertSortType.completion.index,
+  //       ),
+  //     ];
 
+  // ignore: avoid_positional_boolean_parameters
   Widget listViewAdvert(List<Advert> adverts, bool loadMore) =>
       ListView.builder(
           padding: const EdgeInsets.all(8),
@@ -184,7 +221,7 @@ class _AdvertListPageState extends State<AdvertList>
           controller: _scrollController,
           itemBuilder: (BuildContext context, int index) {
             if (index >= adverts.length) {
-              return ProgressIndicator();
+              return progressIndicator();
             } else {
               final Advert item = adverts[index];
 
@@ -194,19 +231,19 @@ class _AdvertListPageState extends State<AdvertList>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    TextWidget(
-                      "Advertise Name : ${item.advertiserDetails?.name ?? item.advertiserDetails?.firstName}",
+                    textWidget(
+                      'Advertise Name : ${item.advertiserDetails?.name ?? item.advertiserDetails?.firstName}',
                     ),
-                    TextWidget(
+                    textWidget(
                       'Account Currency : ${item.accountCurrency}',
                     ),
-                    TextWidget(
-                      'Completion Rate : ${item.advertiserDetails!.totalCompletionRate == null ? "" : item.advertiserDetails!.totalCompletionRate}',
+                    textWidget(
+                      'Completion Rate : ${item.advertiserDetails!.totalCompletionRate == null ? '' : item.advertiserDetails!.totalCompletionRate}',
                     ),
-                    TextWidget(
+                    textWidget(
                       'Price : ${item.price}',
                     ),
-                    TextWidget(
+                    textWidget(
                       'Description : ${item.description}',
                     ),
                   ],
@@ -215,15 +252,15 @@ class _AdvertListPageState extends State<AdvertList>
             }
           });
 
-  Widget ProgressIndicator() {
-    return Center(
-      child:
-          SizedBox(width: 30, height: 30, child: CircularProgressIndicator()),
-    );
-  }
-
-  Widget TextWidget(String text) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(text, style: TextStyle(fontSize: 14, color: Colors.white)),
+  // ignore: prefer_expression_function_bodies
+  Widget progressIndicator() => const Center(
+        child:
+            SizedBox(width: 30, height: 30, child: CircularProgressIndicator()),
       );
+
+  Widget textWidget(String text) => Padding(
+      padding: const EdgeInsets.all(8),
+      // ignore: lines_longer_than_80_chars
+      child: Text(text,
+          style: const TextStyle(fontSize: 14, color: Colors.white)));
 }

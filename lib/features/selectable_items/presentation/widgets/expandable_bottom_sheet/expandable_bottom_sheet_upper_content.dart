@@ -1,5 +1,6 @@
 part of 'expandable_bottom_sheet.dart';
 
+// ignore: public_member_api_docs
 typedef HeightCalculatedHandler = void Function(double);
 
 class _ExpandableBottomSheetUpperContent extends StatelessWidget {

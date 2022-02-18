@@ -17,12 +17,6 @@ Future<bool> isCounterpartyTypeSell() => getBool(isCounterpartyTypeSellKey);
 Future<void> setCounterpartyType({required bool isCounterpartyTypeSell}) =>
     setBool(isCounterpartyTypeSellKey, isCounterpartyTypeSell);
 
-/// Also we need an initial key to save the value of @counterpartyType in order to
-/// use it in following situation:
-/// When user is on the `BuySellPage` and clicks on the sell tab. Then she clicks
-/// on the search button and after that sends a new query for search. Then she clicks
-/// on the buy tab on `SearchPage` and after that she back to the `BuySellPage`. In
-/// such situation, if she clicks on search button and sends a new query for search,
 /// she should see sell adverts.
 /// Key for initial counterparty type.
 const String isInitCounterpartyTypeSellKey = 'IS_INIT_COUNTERPARTY_TYPE_SELL';
@@ -36,6 +30,7 @@ Future<void> setInitCounterpartyType(
         {required bool isInitCounterpartyTypeSell}) =>
     setBool(isInitCounterpartyTypeSellKey, isInitCounterpartyTypeSell);
 
+// ignore: public_member_api_docs
 const String initPageTotalCountKey = 'INIT_PAGE_TOTAL_COUNT';
 
 /// Get a int that count total page loaded

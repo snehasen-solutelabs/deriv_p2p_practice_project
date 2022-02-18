@@ -1,22 +1,53 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:deriv_p2p_practice_project/api/binary_api_wrapper.dart';
+
 import 'package:deriv_p2p_practice_project/features/core/presentation/states/pingService/ping_cubit.dart';
 import 'package:deriv_p2p_practice_project/features/core/presentation/states/pingService/ping_state.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 
-class MockPingCubitBloc extends MockBloc<PingCubit, PingState>
-    implements PingCubit {}
+class MockPingCubit extends MockCubit<PingCubit> implements PingState {
+  @override
+  void addError(Object error, [StackTrace? stackTrace]) {
+    // TODO: implement addError
+  }
 
-void main() {
-  late PingCubit mockAdvertListBloc;
+  @override
+  // TODO: implement binaryApi
+  BinaryAPIWrapper get binaryApi => throw UnimplementedError();
 
-  setUp(() {
-    mockAdvertListBloc = MockPingCubitBloc();
-    // searchSortCubit = SearchCubit(mockAdvertListBloc);
-  });
+  @override
+  Future<void> close() {
+    // TODO: implement close
+    throw UnimplementedError();
+  }
 
-  group('Test SearchSortCubit ', () {});
+  @override
+  Future<void> initWebSocket() {
+    // TODO: implement initWebSocket
+    throw UnimplementedError();
+  }
 
-  tearDown(() {
-    mockAdvertListBloc.close();
-  });
+  @override
+  // TODO: implement isClosed
+  bool get isClosed => throw UnimplementedError();
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    // TODO: implement onError
+  }
+
+  void main() {
+    late PingCubit mockAdvertListBloc;
+
+    setUp(() {
+      mockAdvertListBloc = MockPingCubit() as PingCubit;
+    });
+
+    group('Test SearchSortCubit ', () {});
+
+    tearDown(() {
+      mockAdvertListBloc.close();
+    });
+  }
 }

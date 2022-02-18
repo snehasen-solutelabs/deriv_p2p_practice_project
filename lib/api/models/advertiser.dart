@@ -32,5 +32,6 @@ class Advertiser {
   /// name val
   final String? name;
 
+  // ignore: public_member_api_docs
   final double? totalCompletionRate;
 }
