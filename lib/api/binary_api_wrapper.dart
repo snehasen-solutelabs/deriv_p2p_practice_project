@@ -1,5 +1,4 @@
-import 'package:deriv_p2p_practice_project/enums.dart';
-import 'package:deriv_p2p_practice_project/features/core/helpers/json_helper.dart';
+import 'package:deriv_p2p_practice_project/core/helpers/json_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deriv_api/basic_api/generated/api.dart';
 import 'package:flutter_deriv_api/basic_api/request.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_deriv_api/basic_api/response.dart';
 import 'package:flutter_deriv_api/services/connection/api_manager'
     '/binary_api.dart' as deriv_api;
 import 'package:flutter_deriv_api/services/connection/api_manager/connection_information.dart';
-
 import 'package:web_socket_channel/io.dart';
 
 /// A wrapper around `flutter_deriv_api` package.
@@ -27,20 +25,18 @@ class BinaryAPIWrapper {
       _derivAPICall(AuthorizeRequest(authorize: token));
 
   /// fetch advert list
-  Future<Map<String, dynamic>> p2pAdvertList({
-    String? counterpartyType,
-    int? limit,
-    int? offset,
-    String? searchQuery,
-    AdvertSortType? sortBy,
-  }) =>
+  Future<Map<String, dynamic>> p2pAdvertList(
+          {String? counterpartyType,
+          int? limit,
+          int? offset,
+          String? searchQuery,
+          String? sortBy}) =>
       _derivAPICall(P2pAdvertListRequest(
-        counterpartyType: counterpartyType,
-        limit: limit,
-        offset: offset,
-        advertiserName: searchQuery,
-        sortBy: sortBy?.toString(),
-      ));
+          sortBy: sortBy,
+          counterpartyType: counterpartyType,
+          limit: limit,
+          offset: offset,
+          advertiserName: searchQuery));
 
   Future<Map<String, dynamic>> _derivAPICall(Request request) async {
     final Response response = await _derivAPI.call<Response>(request: request);

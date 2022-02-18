@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
-import 'package:deriv_p2p_practice_project/features/core/presentation/pages/connection_page.dart';
 import 'package:flutter/material.dart';
+
+import 'features/presentation/pages/connection_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

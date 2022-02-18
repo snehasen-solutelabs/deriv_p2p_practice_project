@@ -35,7 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   deriv_lint:
    git:
-    url: git@github.com:regentmarkets/flutter-deriv-packages.git
+    url: https://github.com/regentmarkets/flutter-deriv-packages.git
     path: packages/deriv_lint
   
   flutter_bloc: ^7.0.0
@@ -58,6 +58,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.0.8
+  mocktail: ^0.2.0
   
 
 

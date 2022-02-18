@@ -1,4 +1,4 @@
-import 'package:deriv_p2p_practice_project/features/core/helpers/json_helper.dart';
+import 'package:deriv_p2p_practice_project/core/helpers/json_helper.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
