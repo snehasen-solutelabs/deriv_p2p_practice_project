@@ -19,13 +19,10 @@ class AdvertList extends StatefulWidget {
 
 class _AdvertListPageState extends State<AdvertList>
     with SingleTickerProviderStateMixin {
-  int pageCount = 0;
-  //
-
   final ScrollController _scrollController = ScrollController();
 
   late final AdvertListCubit _advertListCubit;
-  final double _scrollThreshold = 200;
+
   int selectedTabIndex = 0;
   late TabController _tabController;
 
@@ -49,20 +46,17 @@ class _AdvertListPageState extends State<AdvertList>
   void _setActiveTabIndex() {
     selectedTabIndex = _tabController.index;
     _advertListCubit
-        .toggleCounterTypeOption(selectedTabIndex == 0 ? 'buy' : 'sell');
+        .toggleCounterTypeOption(selectedTabIndex == 1 ? 'buy' : 'sell');
+    onRefreshPage();
   }
 
 //pagination on scroll state
   void _onScrollLoadMore() {
-    final double max = _scrollController.position.maxScrollExtent;
-    final double current = _scrollController.position.pixels;
-
-    if (max - current <= _scrollThreshold) {
-      onRefreshPage();
-      // if (_scrollController.position.maxScrollExtent !=
-      //     _scrollController.offset) {
-      //   return;
+    if (_scrollController.position.maxScrollExtent !=
+        _scrollController.offset) {
+      return;
     }
+    onRefreshPage();
   }
 
   /// call advert cubit fetch function
@@ -114,10 +108,7 @@ class _AdvertListPageState extends State<AdvertList>
             const Tab(text: 'Sell'),
           ],
           onTap: (int value) {
-            setState(() {
-              pageCount = 0;
-            });
-            onRefreshPage();
+            _setActiveTabIndex();
           },
         ),
         actions: <Widget>[_buildSortAction()],
@@ -151,7 +142,7 @@ class _AdvertListPageState extends State<AdvertList>
                       onPressed: () {
                         // completion rate selection
                         _advertListCubit.toggleSortOption(1);
-                        onRefreshPage();
+
                         Navigator.pop(context);
                       },
                       child: const Text('Completion rate')),

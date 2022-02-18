@@ -36,15 +36,12 @@ class AdvertListCubit extends Cubit<AdvertListState> {
   void toggleSortOption(int index) {
     _sortType = index;
 
-    _adverts.clear();
     fetchAdverts(isPeriodic: false);
   }
 
   void toggleCounterTypeOption(String type) {
     _counterType = type;
     _istabChanged = true;
-    _adverts.clear();
-    fetchAdverts(isPeriodic: false);
   }
 
   // ignore: sort_constructors_first
@@ -68,13 +65,17 @@ class AdvertListCubit extends Cubit<AdvertListState> {
   Future<void> fetchAdverts({required bool isPeriodic}) async {
     try {
       // print("pageCount $pageCount");
-
-      int limit = isPeriodic
-          ? math.max(_adverts.length, defaultDataFetchLimit)
-          : defaultDataFetchLimit;
-      int offset = isPeriodic || _istabChanged ? 0 : _adverts.length;
-      dev.log('advert_list_cubit_req : offset = $offset : limit = $limit : '
-          'isPeriodic = $isPeriodic : list = ${_adverts.length}');
+      final int offset =
+          _istabChanged == true ? 0 : _adverts.length ~/ defaultDataFetchLimit;
+      if (offset == 0) {
+        emit(AdvertListLoadingState());
+      }
+      // final int limit = isPeriodic
+      //     ? math.max(_adverts.length, defaultDataFetchLimit)
+      //     : defaultDataFetchLimit;
+      // final int offset = isPeriodic || _istabChanged ? 0 : _adverts.length;
+      //dev.log('advert_list_cubit_req : offset = $offset : limit = $limit : '
+      // 'isPeriodic = $isPeriodic : list = ${_adverts.length}');
 
       if (offset == 0) {
         emit(AdvertListLoadingState());
@@ -83,8 +84,8 @@ class AdvertListCubit extends Cubit<AdvertListState> {
       final Map<String, dynamic>? advertListResponse = await pingCubit.binaryApi
           .p2pAdvertList(
             offset: offset,
-            counterpartyType: counterType,
-            limit: limit,
+            counterpartyType: _counterType,
+            limit: 10,
             sortBy: _sortType == 0 ? 'rate' : 'completion',
           )
           .timeout(const Duration(seconds: 50));
