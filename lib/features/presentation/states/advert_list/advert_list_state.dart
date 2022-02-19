@@ -12,13 +12,19 @@ class AdvertListLoadingState extends AdvertListState {}
 /// adverts loaded state
 class AdvertListLoadedState extends AdvertListState {
   /// Init State
-  AdvertListLoadedState({required this.adverts, required this.hasRemaining});
+  AdvertListLoadedState(
+      {required this.adverts,
+      required this.hasRemaining,
+      required this.isPeriodic});
 
   /// adverts list
   final List<Advert> adverts;
 
   /// hasRemaining
   bool hasRemaining;
+
+  // ignore: public_member_api_docs
+  bool isPeriodic;
 }
 
 /// adverts error state

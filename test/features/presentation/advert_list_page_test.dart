@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'advert_list_data.dart';
 
 void main() {
-  group('Advert list page widget possible tests =>', () {
+  group('Advert list page widget list tests =>', () {
     testWidgets('Widget exists', (WidgetTester tester) async {
       final List<Advert> advertsList = adverts;
       await tester
@@ -86,7 +86,6 @@ class _TestAppState extends State<_TestApp> {
                                 blurRadius: 6,
                                 spreadRadius: 2)
                           ]));
-                  // _buildAdvertListItems(state.adverts, index, context)
                 }
               })));
 }

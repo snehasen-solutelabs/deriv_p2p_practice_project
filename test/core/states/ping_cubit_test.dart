@@ -3,32 +3,29 @@ import 'package:deriv_p2p_practice_project/api/binary_api_wrapper.dart';
 import 'package:deriv_p2p_practice_project/core/states/pingService/ping_cubit.dart';
 import 'package:deriv_p2p_practice_project/core/states/pingService/ping_state.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_deriv_api/api/api_initializer.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockPingCubit extends MockCubit<PingState> implements PingCubit {}
 
-class FakePingState extends Mock implements PingState {}
+class FakePingState extends Fake implements PingState {}
 
 void main() {
-  late MockPingCubit mockPingCubit;
   setUpAll(() {
     registerFallbackValue(FakePingState());
-
-    mockPingCubit = MockPingCubit();
   });
 
-  group('Ping cubit Connection test', () {
-    final Exception connectionException = Exception('ping cubit exception.');
-
+  group('ping cubit test1 () => ', () {
+    final Exception exception = Exception('ping cubit exception.');
     blocTest<PingCubit, PingState>(
-      ' ping cubit captures all exceptions => (ping_cubit).',
+      ' ping cubit captures exceptions => (ping_cubit).',
       build: () => PingCubit(),
-      act: (PingCubit cubit) => cubit.addError(connectionException),
-      errors: () => <Matcher>[equals(connectionException)],
+      act: (PingCubit cubit) => cubit.addError(exception),
+      errors: () => <Matcher>[equals(exception)],
     );
-    test('test Mock Ping Cubit', () async {
+
+    test('test2 with mock data', () async {
       final MockPingCubit pingCubit = MockPingCubit();
 
       whenListen(
@@ -56,7 +53,7 @@ void main() {
 
     final MockPingCubit mockPingCubit = MockPingCubit();
     blocTest<MockPingCubit, PingState>(
-      'should fetch deriv ping with expect states () =>',
+      'should fetch ping with expect states () =>',
       build: () => mockPingCubit,
       verify: (MockPingCubit cubit) async {
         expect(cubit.state, isA<PingLoadingState>());

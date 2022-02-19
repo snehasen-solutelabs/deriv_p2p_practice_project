@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-
 import 'package:deriv_p2p_practice_project/api/models/advert.dart';
 import 'package:deriv_p2p_practice_project/core/states/pingService/ping_cubit.dart';
 import 'package:deriv_p2p_practice_project/features/presentation/states/advert_list/advert_list_cubit.dart';
@@ -81,9 +79,10 @@ class _AdvertListPageState extends State<AdvertList>
         bloc: _advertListCubit,
         builder: (BuildContext context, AdvertListState state) {
           if (state is AdvertListLoadedState) {
-            // ignore: lines_longer_than_80_chars
             return listViewAdvert(
-                adverts: state.adverts, loadMore: state.hasRemaining);
+                adverts: state.adverts,
+                loadMore: state.hasRemaining,
+                isPeriodic: state.isPeriodic);
           } else if (state is AdvertListLoadingState) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is AdvertListErrorState) {
@@ -154,7 +153,9 @@ class _AdvertListPageState extends State<AdvertList>
 
   // list view for showing buy and sell adverts
   Widget listViewAdvert(
-          {required List<Advert> adverts, required bool loadMore}) =>
+          {required List<Advert> adverts,
+          required bool loadMore,
+          required bool isPeriodic}) =>
       ListView.builder(
           padding: const EdgeInsets.all(8),
           shrinkWrap: true,
@@ -163,7 +164,9 @@ class _AdvertListPageState extends State<AdvertList>
           controller: _scrollController,
           itemBuilder: (BuildContext context, int index) {
             if (index >= adverts.length) {
-              return const Center(child: CircularProgressIndicator());
+              return isPeriodic
+                  ? const Text('')
+                  : const Center(child: CircularProgressIndicator());
             } else {
               final Advert item = adverts[index];
               return Column(
@@ -175,9 +178,9 @@ class _AdvertListPageState extends State<AdvertList>
 
   @override
   void dispose() {
-    // _advertListCubit.close();
-    // _scrollController.dispose();
-    // _tabController.dispose();
+    _advertListCubit.close();
+    _scrollController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 }

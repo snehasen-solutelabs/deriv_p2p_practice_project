@@ -1,7 +1,7 @@
 import 'package:deriv_p2p_practice_project/api/models/advert.dart';
 import 'package:flutter/material.dart';
 
-/// Advert list items
+/// Adverts list items
 class ListItems extends StatelessWidget {
   /// Init Widget
   const ListItems({required this.item, Key? key}) : super(key: key);

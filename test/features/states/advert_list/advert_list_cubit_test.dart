@@ -1,25 +1,21 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:deriv_p2p_practice_project/api/binary_api_wrapper.dart';
 import 'package:deriv_p2p_practice_project/api/models/advert.dart';
 import 'package:deriv_p2p_practice_project/core/states/pingService/ping_cubit.dart';
 import 'package:deriv_p2p_practice_project/features/presentation/states/advert_list/advert_list_cubit.dart';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAdvertListCubit extends MockCubit<AdvertListState>
     implements AdvertListCubit {}
 
-class FakeAdvertListState extends Mock implements AdvertListState {}
-
-class MockBinaryAPI extends Mock implements BinaryAPIWrapper {}
+class FakeAdvertListState extends Fake implements AdvertListState {}
 
 void main() {
   late PingCubit pingCubit;
   late AdvertListCubit advertListCubit;
 
   setUpAll(() async {
-    //registerFallbackValue(FakeAdvertListState());
+    registerFallbackValue(FakeAdvertListState());
 
     pingCubit = PingCubit();
     await pingCubit.initWebSocket();
@@ -35,7 +31,7 @@ void main() {
         errors: () => <Matcher>[equals(exception)]);
 
     blocTest<AdvertListCubit, AdvertListState>(
-      'should fetch advert list with expect states () =>',
+      'should fetch advert list with these states () =>',
       build: () => advertListCubit,
       verify: (AdvertListCubit cubit) async {
         expect(cubit.state, isA<AdvertListLoadingState>());
@@ -47,7 +43,7 @@ void main() {
         expect(currentState.adverts, isNotNull);
         expect(currentState.adverts, isA<List<Advert>>());
       },
-      act: (AdvertListCubit a) => a.fetchAdverts(isPeriodic: true),
+      act: (AdvertListCubit a) => a.fetchAdverts(isPeriodic: false),
       expect: () => <dynamic>[
         isA<AdvertListLoadingState>(),
         isA<AdvertListLoadedState>(),

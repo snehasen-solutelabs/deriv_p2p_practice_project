@@ -28,7 +28,8 @@ class _ConnectionPageState extends State<Connection> {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.black,
 
-        // Here connecting to Ping cubit (ping cubit will initialize Binary api and also authorize user token)
+        // Here connecting to Ping cubit (ping cubit will initialize Binary api
+        // and also authorize user token)
         body: MultiBlocProvider(
           // ignore: always_specify_types
           providers: [

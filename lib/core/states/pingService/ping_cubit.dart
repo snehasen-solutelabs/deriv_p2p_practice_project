@@ -1,17 +1,17 @@
 import 'dart:developer' as dev;
-
 import 'package:deriv_p2p_practice_project/api/binary_api_wrapper.dart';
 import 'package:deriv_p2p_practice_project/core/states/pingService/ping_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Deriv ping cubit for managing active symbol state.
+///  ping cubit manage connection state.
 class PingCubit extends Cubit<PingState> {
   /// Initializes ping cubit.
   PingCubit() : super(PingInitialState());
   final UniqueKey _uniqueKey = UniqueKey();
   late BinaryAPIWrapper _api;
 
+  // ignore: public_member_api_docs
   BinaryAPIWrapper get binaryApi => _api;
 
   /// init web socket
