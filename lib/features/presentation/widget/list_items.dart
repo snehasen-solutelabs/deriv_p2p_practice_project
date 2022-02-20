@@ -37,6 +37,11 @@ class ListItems extends StatelessWidget {
               'Description : ${item.description ?? ''}',
               style: const TextStyle(color: Colors.white),
             ),
+            const SizedBox(height: 8),
+            Text(
+              'Counter Party Type : ${item.counterPartyType ?? ''}',
+              style: const TextStyle(color: Colors.white),
+            ),
           ],
         ),
       );

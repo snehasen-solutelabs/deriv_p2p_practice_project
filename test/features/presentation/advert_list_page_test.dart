@@ -9,28 +9,30 @@ void main() {
   group('Advert list page widget list tests =>', () {
     testWidgets('Widget exists', (WidgetTester tester) async {
       final List<Advert> advertsList = adverts;
+
       await tester
-          .pumpWidget(_TestApp(adverts: advertsList, hasRemaining: true));
+          .pumpWidget(_TestList(adverts: advertsList, hasRemaining: true));
 
       await tester.idle();
       await tester.pumpAndSettle();
 
       expect(find.byType(ListView), findsOneWidget);
       expect(find.byType(Scrollable), findsOneWidget);
+
       final Finder listFinder = find.byType(Scrollable);
-      final Finder itemFinder = find.byKey(const Key('item_4'));
+      final Finder itemFinder = find.byKey(const Key('adverts4'));
 
       // Scroll until the item to be found appears.
-      await tester.scrollUntilVisible(itemFinder, 1000, scrollable: listFinder);
+      await tester.scrollUntilVisible(itemFinder, 25, scrollable: listFinder);
       expect(itemFinder, findsOneWidget);
     });
   });
 }
 
 /// _Test App Scaffold
-class _TestApp extends StatefulWidget {
+class _TestList extends StatefulWidget {
   /// Init State
-  const _TestApp({required this.adverts, required this.hasRemaining});
+  const _TestList({required this.adverts, required this.hasRemaining});
 
   /// adverts list
   final List<Advert> adverts;
@@ -39,10 +41,11 @@ class _TestApp extends StatefulWidget {
   final bool hasRemaining;
 
   @override
-  State<_TestApp> createState() => _TestAppState();
+  State<_TestList> createState() => _TestListAppState();
 }
 
-class _TestAppState extends State<_TestApp> {
+class _TestListAppState extends State<_TestList>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) => MaterialApp(
       home: Scaffold(
@@ -59,7 +62,7 @@ class _TestAppState extends State<_TestApp> {
                   final Advert item = widget.adverts[index];
 
                   return Container(
-                      key: Key('item_$index'),
+                      key: Key('adverts$index'),
                       margin: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),
                       padding: const EdgeInsets.symmetric(
@@ -75,6 +78,10 @@ class _TestAppState extends State<_TestApp> {
                           const SizedBox(height: 8),
                           Text('Description : ${item.description ?? ''}'),
                           const SizedBox(height: 8),
+                          Text(
+                            'Counter Party Type : ${item.counterPartyType ?? ''}',
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ],
                       ),
                       decoration: BoxDecoration(

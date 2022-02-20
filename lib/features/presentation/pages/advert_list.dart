@@ -44,8 +44,8 @@ class _AdvertListPageState extends State<AdvertList>
   void _setActiveTabIndex() {
     selectedTabIndex = _tabController.index;
     _advertListCubit
-        .toggleCounterTypeOption(selectedTabIndex == 1 ? 'buy' : 'sell');
-    onRefreshPage();
+        .toggleCounterTypeOption(selectedTabIndex == 1 ? 'sell' : 'buy');
+    // onRefreshPage();
   }
 
 //pagination on scroll state

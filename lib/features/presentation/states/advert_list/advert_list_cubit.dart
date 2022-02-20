@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'dart:async';
+import 'dart:math' as math;
 import 'package:deriv_p2p_practice_project/api/models/advert.dart';
 import 'package:deriv_p2p_practice_project/core/states/pingService/ping_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,23 +48,29 @@ class AdvertListCubit extends Cubit<AdvertListState> {
 
   void toggleCounterTypeOption(String type) {
     _counterType = type;
+    //update tab chnage for advert list size
     _istabChanged = true;
+    //remove sort type
+    _sortType = 0;
     _adverts.clear();
+    fetchAdverts(isPeriodic: false);
   }
 
   /// fetch limit for pagination
-  final int defaultDataFetchLimit = 10;
+  final int defaultDataFetchLimit = 5;
 
   /// list of adverts
   final List<Advert> _adverts = <Advert>[];
 
   Future<void> fetchAdverts({required bool isPeriodic}) async {
     try {
-      int offset = 0;
-
-      offset = isPeriodic ? 0 : _adverts.length ~/ defaultDataFetchLimit;
-
-      if (offset == 0 && isPeriodic == false) {
+      final int limit = isPeriodic
+          ? math.max(_adverts.length, defaultDataFetchLimit)
+          : defaultDataFetchLimit;
+      final int offset = isPeriodic || _istabChanged ? 0 : _adverts.length;
+      _istabChanged = false;
+      if (offset == 0 || isPeriodic == false) {
+        //off the indicator loader for piriodic fetch
         emit(AdvertListLoadingState());
       }
 
@@ -71,7 +78,7 @@ class AdvertListCubit extends Cubit<AdvertListState> {
           .p2pAdvertList(
             offset: offset,
             counterpartyType: _counterType,
-            limit: 10,
+            limit: limit,
             sortBy: _sortType == 0 ? 'rate' : 'completion',
           )
           .timeout(const Duration(seconds: 50));
@@ -87,7 +94,13 @@ class AdvertListCubit extends Cubit<AdvertListState> {
         for (final Map<String, dynamic> response in list) {
           _adverts.add(Advert.fromMap(response));
         }
-
+// adding paging data
+        emit(AdvertListLoadedState(
+            adverts: _adverts,
+            hasRemaining: list.length >= defaultDataFetchLimit,
+            isPeriodic: isPeriodic));
+      } else if (list.isEmpty) {
+        //showing last added data
         emit(AdvertListLoadedState(
             adverts: _adverts,
             hasRemaining: list.length >= defaultDataFetchLimit,
